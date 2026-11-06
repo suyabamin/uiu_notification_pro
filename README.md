@@ -1,1424 +1,1310 @@
-# 🛡️ Su Ad Blocker Pro
-
-### Browse Faster. Stay Ad-Free. Protect Your Privacy.
+# 🎓 UniPortal Monitor
+### Cross-Browser University Portal Notification & Monitoring Extension
 
 <p align="center">
-  <strong>A Lightweight, Privacy-Focused, Multi-Browser Ad Blocking Extension</strong>
+  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Manifest-V3-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Type-Browser%20Extension-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Privacy-No%20Password%20Storage-success?style=for-the-badge" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Project-Su%20Ad%20Blocker%20Pro-f97316?style=for-the-badge" alt="Project"/>
-  <img src="https://img.shields.io/badge/Manifest-V3-blue?style=for-the-badge" alt="Manifest V3"/>
-  <img src="https://img.shields.io/badge/Platform-Chrome%20%7C%20Firefox%20%7C%20Edge-green?style=for-the-badge" alt="Browsers"/>
-  <img src="https://img.shields.io/badge/License-Private-lightgrey?style=for-the-badge" alt="License"/>
+  <b>One Extension. Two University Portals. One Unified Notification System.</b>
 </p>
 
----
+UniPortal Monitor is a cross-browser browser extension designed to monitor the academic portals of **United International University (UIU)**.
 
-## 📌 Table of Contents
+It automatically checks the UCAM and ELMS portals for new academic activities, including notices, study materials, assignments, announcements, and other supported updates.
 
-1. [Project Overview](#-1-project-overview)
-2. [Project Objectives](#-2-project-objectives)
-3. [Features](#-3-features)
-4. [Technology Stack](#-4-technology-stack)
-5. [System Architecture](#-5-system-architecture)
-6. [Software Requirements Specification](#-6-software-requirements-specification-srs)
-7. [Project Directory Structure](#-7-project-directory-structure)
-8. [Core Module Documentation](#-8-core-module-documentation)
-9. [Ad Blocking Workflow](#-9-ad-blocking-workflow)
-10. [YouTube Integration](#-10-youtube-integration)
-11. [Translation Architecture](#-11-translation-architecture)
-12. [PDF Reader Architecture](#-12-pdf-reader-architecture)
-13. [Data Storage and Management](#-13-data-storage-and-management)
-14. [Browser Compatibility](#-14-browser-compatibility)
-15. [Installation and Setup](#-15-installation-and-setup)
-16. [Build and Deployment](#-16-build-and-deployment)
-17. [Testing Strategy](#-17-testing-strategy)
-18. [Debugging Handbook](#-18-debugging-handbook)
-19. [Security and Privacy](#-19-security-and-privacy)
-20. [Performance Optimization](#-20-performance-optimization)
-21. [Known Limitations](#-21-known-limitations)
-22. [Development Guidelines](#-22-development-guidelines)
-23. [Troubleshooting](#-23-troubleshooting)
-24. [Future Development Roadmap](#-24-future-development-roadmap)
-25. [Contribution Guidelines](#-25-contribution-guidelines)
+The extension uses the browser's existing authenticated session instead of asking students to provide or store their university passwords.
+
+Its architecture is designed around modular portal adapters, background monitoring, change detection, local storage, and browser-native notifications.
 
 ---
 
-# 🧩 1. Project Overview
+# 📑 Table of Contents
 
-**Su Ad Blocker Pro** is a privacy-focused browser extension designed to improve the browsing experience by blocking unwanted advertisements, reducing tracking activities, and providing additional browsing utilities.
+1. Project Overview
+2. Key Features
+3. System Requirements Specification (SRS)
+4. System Architecture
+5. Application Workflow
+6. Technology Stack
+7. Project Directory Structure
+8. Portal Integration Architecture
+9. Data and Storage Architecture
+10. Security and Privacy
+11. Browser Compatibility
+12. Installation and Setup
+13. Development Workflow
+14. Build and Distribution
+15. Testing Strategy
+16. Debugging and Troubleshooting
+17. Maintenance and Future Improvements
+18. Known Limitations
+19. Contribution Guidelines
+20. License and Disclaimer
 
-The project is built around the Chromium Manifest V3 extension architecture, with cross-browser support as a core engineering objective.
+---
 
-Unlike traditional browser extensions that depend entirely on external services, Su Ad Blocker Pro prioritizes local processing, browser-native APIs, and user-controlled configurations.
+# 1. Project Overview
 
-### Core Philosophy
-
-- Fast: Minimize unnecessary network requests and DOM operations.
-- Lightweight: Reduce CPU and memory consumption.
-- Private: Keep browsing-related information local wherever possible.
-- Reliable: Maintain stable functionality across supported browsers.
-- Maintainable: Use modular architecture and documented development practices.
-- Extensible: Support future improvements without breaking existing features.
-
-### Project Identity
+## 1.1 Project Information
 
 | Property | Description |
 |---|---|
-| Project Name | Su Ad Blocker Pro |
-| Previous Name | Hush |
-| Project Type | Browser Extension |
-| Architecture | Modular Extension Architecture |
-| Manifest | Manifest V3 |
-| Primary Target | Chromium-based browsers |
-| Secondary Target | Mozilla Firefox |
-| Processing Model | Local-first |
-| Main Purpose | Advertisement and Tracker Blocking |
-| UI Theme | Professional Orange |
-| Hosting Requirement | Not required for core functionality |
-| Browser Automation | Optional Playwright |
+| Project Name | UniPortal Monitor |
+| Project Type | Cross-Browser Extension |
+| Primary Institution | United International University |
+| Primary Portals | UCAM and ELMS |
+| Architecture | Modular Adapter-Based Architecture |
+| Extension Standard | Manifest V3 |
+| Authentication | Existing Browser Session |
+| Data Storage | Browser Local Storage |
+| Notification | Browser Notifications API |
+| Monitoring Interval | 30 Minutes |
+| Target Platforms | Chromium Browsers and Firefox |
+
+## 1.2 Problem Statement
+
+Students frequently need to visit multiple university portals to check for newly published academic information.
+
+Manually checking these portals creates several problems:
+
+- Students may miss important announcements.
+- New assignments or study materials may go unnoticed.
+- Repeatedly checking multiple websites wastes time.
+- There is no unified notification mechanism.
+- Students may not immediately notice important academic updates.
+
+UniPortal Monitor addresses these problems through automated portal monitoring and centralized notifications.
+
+## 1.3 Project Objectives
+
+- Automatically monitor UCAM and ELMS.
+- Detect newly published academic information.
+- Notify students when new content is available.
+- Support multiple browsers.
+- Avoid storing university passwords.
+- Provide a simple and professional user interface.
+- Maintain a modular architecture for future maintenance.
+- Minimize unnecessary requests to university servers.
 
 ---
 
-# 🎯 2. Project Objectives
+# 2. Key Features
 
-The primary objective is to develop a reliable browser extension that provides:
-
-1. Network-level advertisement blocking.
-2. Cosmetic advertisement filtering.
-3. Third-party tracker protection.
-4. YouTube advertisement handling.
-5. Browser-level privacy improvements.
-6. Custom filtering and allowlisting.
-7. Real-time blocking statistics.
-8. Integrated PDF reading.
-9. Text translation utilities.
-10. Cross-browser compatibility.
-
-### Design Principles
-
-| Principle | Engineering Approach |
+| Feature | Description |
 |---|---|
-| Performance | Efficient filtering and minimal DOM processing |
-| Privacy | Local storage and minimal external communication |
-| Reliability | Error handling and regression testing |
-| Modularity | Independent functional modules |
-| Compatibility | Browser API abstraction |
-| Maintainability | Documentation and structured code |
-| Security | Minimum required permissions |
+| UCAM Monitoring | Checks supported UCAM academic information |
+| ELMS Monitoring | Checks supported ELMS academic information |
+| Automatic Checking | Periodic monitoring using browser alarms |
+| Change Detection | Compares new data with previously stored snapshots |
+| Desktop Notifications | Displays notifications for detected updates |
+| Badge Updates | Displays monitoring information on the extension icon |
+| Session Authentication | Uses existing browser login sessions |
+| Local Storage | Stores monitoring snapshots and settings |
+| Custom Notification Sound | Browser-dependent audio notification support |
+| Popup Dashboard | Displays monitoring status and recent information |
+| Options Page | Provides configuration options |
+| Cross-Browser Builds | Generates separate browser distributions |
 
----
-
-# 🚀 3. Features
-
-## 3.1 Advertisement Blocking
-
-- Network request blocking.
-- Static filtering rules.
-- Dynamic filtering rules.
-- Cosmetic filtering.
-- Banner advertisement removal.
-- Pop-up advertisement protection.
-- Third-party advertising request blocking.
-- Filter-list management.
-- Custom filtering rules.
-
-## 3.2 Tracker Protection
-
-- Third-party tracking protection.
-- Tracking-domain filtering.
-- Privacy-focused filter lists.
-- Reduced unnecessary external requests.
-
-## 3.3 YouTube Integration
-
-- YouTube advertisement detection.
-- Skip-button detection and automation.
-- Advertisement overlay handling.
-- Dynamic DOM monitoring.
-- SPA navigation support.
-- YouTube selector self-test.
-- Search interface protection and stability.
-
-**Important:** YouTube frequently changes its player and advertisement delivery mechanisms. No implementation should promise universal or permanent advertisement removal.
-
-## 3.4 Dashboard and Settings
-
-- Extension status.
-- Blocked request statistics.
-- Site-specific pause functionality.
-- Allowlist management.
-- Custom rules.
-- Filter-list configuration.
-- Settings management.
-- About page.
-
-## 3.5 PDF Reader
-
-- Integrated PDF.js reader.
-- Local PDF rendering.
-- Document navigation.
-- Reading interface.
-
-## 3.6 Translation System
-
-- Translation interface.
-- Text processing and chunking.
-- Translation history.
-- Translation service integration.
-- Translation model infrastructure where configured.
-- Error handling.
-
-## 3.7 Browser Support
-
-- Google Chrome.
-- Microsoft Edge.
-- Brave.
-- Opera.
-- Mozilla Firefox.
-
-Actual support depends on browser API compatibility and successful testing.
-
----
-
-# 🛠️ 4. Technology Stack
-
-The following technologies represent the project's established architecture. Exact package versions and enabled modules must be verified against package.json and the current source code.
-
-| Technology | Purpose |
-|---|---|
-| JavaScript / TypeScript | Application logic |
-| HTML5 | Extension interface |
-| CSS3 | UI styling |
-| Chrome Extension Manifest V3 | Extension architecture |
-| Declarative Net Request API | Network-level blocking |
-| Content Scripts | Website interaction |
-| MutationObserver | Dynamic DOM monitoring |
-| Browser Storage API | Local settings and history |
-| Mozilla PDF.js | PDF rendering |
-| Transformers.js | Machine-learning translation infrastructure |
-| ONNX Runtime Web | Browser-based model execution |
-| NLLB Model | Multilingual translation model infrastructure |
-| Node.js 22 LTS | Development environment |
-| npm | Dependency management |
-| Git | Version control |
-| Playwright | Optional browser automation |
-
-### Important Technologies
-
-**Manifest V3**
-
-Provides the extension's permission model, background execution architecture, and browser integration.
-
-**Declarative Net Request (DNR)**
-
-Allows the extension to block or modify supported network requests using browser-managed rules.
-
-**Content Scripts**
-
-Interact with website DOM elements, including YouTube's dynamic interface.
-
-**MutationObserver**
-
-Monitors relevant DOM changes. It must be carefully scoped to avoid excessive processing and interference with legitimate website controls.
-
-**PDF.js**
-
-Provides PDF rendering functionality inside the extension.
-
-**Transformers.js and ONNX Runtime Web**
-
-Provide infrastructure for browser-side machine-learning workloads where the corresponding translation implementation is enabled.
-
----
-
-# 🏗️ 5. System Architecture
-
-## 5.1 High-Level Architecture
+## 2.1 Monitoring Flow
 
 ```mermaid
-flowchart TB
-    U["User"]
-    B["Browser"]
-    UI["Extension UI"]
-    BG["Background Service Worker"]
-    CORE["Core Blocking Engine"]
-    DNR["Declarative Net Request"]
-    CS["Content Scripts"]
-    YT["YouTube Integration"]
-    FILTER["Filter Lists"]
-    STORE["Local Storage"]
-    PDF["PDF.js Reader"]
-    TR["Translation System"]
+flowchart TD
+    A[Browser Starts] --> B[Extension Initialization]
+    B --> C[Initialize Alarm Manager]
+    C --> D[Check Existing Sessions]
+    D --> E[UCAM Monitoring]
+    D --> F[ELMS Monitoring]
 
-    U --> B
-    B --> UI
-    UI --> BG
-    BG --> CORE
-    CORE --> DNR
-    CORE --> FILTER
-    BG --> STORE
-    B --> CS
-    CS --> YT
-    UI --> PDF
-    UI --> TR
-    TR --> STORE
+    E --> G[Collect Supported Information]
+    F --> H[Collect Supported Information]
+
+    G --> I[Change Detection]
+    H --> I
+
+    I --> J{New Content Found?}
+
+    J -->|Yes| K[Notification Dispatcher]
+    J -->|No| L[Update Last Checked Time]
+
+    K --> M[Desktop Notification]
+    K --> N[Update Badge]
+    K --> O[Save Snapshot]
+
+    L --> P[Wait for Next Alarm]
+    M --> P
+    N --> P
+    O --> P
+
+    P --> C
 ```
-
-### Architecture Explanation
-
-| Component | Responsibility |
-|---|---|
-| Extension UI | User interaction |
-| Background Service Worker | Background operations |
-| Core Blocking Engine | Rule processing |
-| DNR | Network request filtering |
-| Content Scripts | Website-level interaction |
-| YouTube Integration | Video platform-specific behavior |
-| Filter Lists | Advertisement and tracker definitions |
-| Local Storage | Settings and history |
-| PDF.js | PDF rendering |
-| Translation System | Translation processing |
-
-## 5.2 Component Communication
-
-```mermaid
-flowchart LR
-    POP["Popup"]
-    OPT["Options"]
-    BG["Background"]
-    CORE["Core Engine"]
-    STORAGE["Storage"]
-    CONTENT["Content Scripts"]
-    PAGE["Web Pages"]
-
-    POP <--> BG
-    OPT <--> BG
-    BG <--> CORE
-    BG <--> STORAGE
-    BG <--> CONTENT
-    CONTENT <--> PAGE
-```
-
-The actual communication mechanisms may include extension messaging, browser APIs, and local storage.
 
 ---
 
-# 📋 6. Software Requirements Specification (SRS)
+# 3. Software Requirements Specification (SRS)
 
-## 6.1 Introduction
+## 3.1 Purpose
 
-### Purpose
+This section defines the functional and non-functional requirements of UniPortal Monitor.
 
-This section defines the functional and non-functional requirements of Su Ad Blocker Pro.
+It serves as a reference for developers, maintainers, testers, and future contributors.
 
-### Scope
+## 3.2 Scope
 
-The system is a browser extension intended to block unwanted advertisements, reduce tracking, and provide supplementary browsing utilities.
+The system monitors two university portals:
 
-## 6.2 Functional Requirements
+1. UCAM — University Course and Academic Management Portal.
+2. ELMS — Electronic Learning Management System.
+
+The extension operates within the browser and uses authenticated sessions already established by the student.
+
+## 3.3 Functional Requirements
 
 | ID | Requirement | Priority |
 |---|---|---|
-| FR-01 | Enable and disable protection | Critical |
-| FR-02 | Block supported advertising requests | Critical |
-| FR-03 | Apply cosmetic filtering | High |
-| FR-04 | Manage filter lists | High |
-| FR-05 | Support allowlisted websites | High |
-| FR-06 | Support custom filtering rules | High |
-| FR-07 | Display actual blocking statistics | High |
-| FR-08 | Detect YouTube ad states | High |
-| FR-09 | Handle available YouTube skip controls | High |
-| FR-10 | Preserve YouTube search functionality | Critical |
-| FR-11 | Support YouTube SPA navigation | High |
-| FR-12 | Provide integrated PDF reading | Medium |
-| FR-13 | Maintain translation history | Medium |
-| FR-14 | Persist user settings | High |
-| FR-15 | Support Chrome and Firefox builds | Critical |
+| FR-01 | The system shall initialize when the browser loads the extension. | High |
+| FR-02 | The system shall schedule periodic monitoring. | High |
+| FR-03 | The system shall detect the existing UCAM session. | High |
+| FR-04 | The system shall detect the existing ELMS session. | High |
+| FR-05 | The system shall retrieve supported portal information. | High |
+| FR-06 | The system shall parse supported HTML content. | High |
+| FR-07 | The system shall compare new data with previous snapshots. | High |
+| FR-08 | The system shall detect newly published information. | High |
+| FR-09 | The system shall generate desktop notifications. | High |
+| FR-10 | The system shall update the extension badge. | Medium |
+| FR-11 | The system shall store monitoring snapshots locally. | High |
+| FR-12 | The system shall display monitoring status in the popup. | High |
+| FR-13 | The system shall support user-configurable settings where implemented. | Medium |
+| FR-14 | The system shall support separate browser builds. | High |
+| FR-15 | The system shall handle expired or unavailable sessions gracefully. | High |
 
-## 6.3 Non-Functional Requirements
+## 3.4 Non-Functional Requirements
 
-| ID | Requirement | Expected Behavior |
-|---|---|---|
-| NFR-01 | Performance | Minimal browsing overhead |
-| NFR-02 | Reliability | No unintended DOM removal |
-| NFR-03 | Security | Minimum necessary permissions |
-| NFR-04 | Privacy | Avoid unnecessary data transmission |
-| NFR-05 | Compatibility | Browser-specific API handling |
-| NFR-06 | Maintainability | Modular code |
-| NFR-07 | Scalability | Efficient rule management |
-| NFR-08 | Usability | Simple and accessible UI |
-| NFR-09 | Stability | No continuous unnecessary polling |
-| NFR-10 | Recovery | Graceful handling of errors |
+### Performance
 
-## 6.4 System Constraints
+- Monitoring should not unnecessarily consume CPU or memory.
+- Requests should be made only when required.
+- HTML parsing should be efficient.
+- The interface should load quickly.
 
-- Manifest V3 restrictions must be respected.
-- Remote executable JavaScript must not be downloaded and executed.
-- Browser-specific APIs must be handled correctly.
-- DNR rules must comply with browser limits.
-- YouTube's DOM is dynamic and can change without notice.
-- Browser automation may be unavailable in some development environments.
-- Some advertisements cannot be reliably removed by DOM manipulation.
+### Security
 
-## 6.5 Use Case Diagram
+- University passwords must never be stored.
+- Authentication must rely on existing browser sessions.
+- Sensitive session information must not appear in logs.
+- Requests must be restricted to approved portal origins.
+- External analytics or tracking should not be introduced without explicit justification.
+
+### Reliability
+
+- Background monitoring should recover after browser restarts.
+- Failed requests should not corrupt previous snapshots.
+- Temporary network failures should not permanently stop monitoring.
+- Duplicate notifications should be minimized.
+
+### Maintainability
+
+- UCAM and ELMS logic should remain separated.
+- Shared functionality should be reusable.
+- TypeScript types should be maintained.
+- Tests should cover parsing and change detection.
+- Portal selectors should be easy to update.
+
+### Compatibility
+
+- Support the intended Chromium browsers.
+- Support Firefox through a browser-specific build.
+- Avoid unnecessary browser-specific dependencies in shared modules.
+
+## 3.5 Use Case Diagram
 
 ```mermaid
 flowchart LR
-    USER["Browser User"]
+    Student((Student))
+    Browser((Browser))
+    UCAM((UCAM Portal))
+    ELMS((ELMS Portal))
 
-    subgraph SYSTEM["Su Ad Blocker Pro"]
-        A["Enable Protection"]
-        B["Manage Filter Lists"]
-        C["Pause Protection"]
-        D["View Statistics"]
-        E["Manage Allowlist"]
-        F["Use PDF Reader"]
-        G["Translate Text"]
-        H["Configure Settings"]
+    subgraph Extension[UniPortal Monitor]
+        Monitor[Monitor Portals]
+        Detect[Detect Changes]
+        Notify[Send Notifications]
+        Settings[Manage Settings]
+        Dashboard[View Dashboard]
     end
 
-    USER --> A
-    USER --> B
-    USER --> C
-    USER --> D
-    USER --> E
-    USER --> F
-    USER --> G
-    USER --> H
+    Student --> Dashboard
+    Student --> Settings
+    Browser --> Monitor
+
+    Monitor --> UCAM
+    Monitor --> ELMS
+
+    UCAM --> Detect
+    ELMS --> Detect
+
+    Detect --> Notify
+    Notify --> Student
 ```
-
-## 6.6 Acceptance Criteria
-
-The project should not be considered complete until:
-
-- Both browser builds are successful.
-- Core network filtering is verified.
-- Cosmetic filtering is verified.
-- Settings persist correctly.
-- Allowlist behavior works.
-- Statistics reflect actual events.
-- YouTube search remains functional.
-- YouTube navigation does not break content scripts.
-- Existing features pass regression testing.
-- No critical security issue remains.
 
 ---
 
-# 📂 7. Project Directory Structure
+# 4. System Architecture
 
-The following is a logical architecture map based on the established project modules. It is not a substitute for the actual repository tree.
+## 4.1 Architectural Pattern
+
+The application follows a modular architecture using separate portal adapters.
+
+Each portal has its own authentication/session handling, data collection, and parsing logic.
+
+Shared components handle scheduling, orchestration, change detection, notifications, and storage.
+
+This separation makes it possible to modify one portal integration without unnecessarily changing the other.
+
+## 4.2 High-Level Architecture
+
+```mermaid
+flowchart TB
+    subgraph Browser[Browser Environment]
+        UI[Popup UI]
+        Options[Options Page]
+        BG[Background Controller]
+        Storage[(Browser Storage)]
+        Alarm[Browser Alarms API]
+        Notification[Notifications API]
+    end
+
+    subgraph Core[Shared Application Core]
+        Router[Message Router]
+        Orchestrator[Checker Orchestrator]
+        Diff[Change Detection Engine]
+        Dispatcher[Notification Dispatcher]
+    end
+
+    subgraph Adapters[Portal Adapters]
+        UCAM[UCAM Adapter]
+        ELMS[ELMS Adapter]
+    end
+
+    subgraph External[External University Portals]
+        U[UCAM Portal]
+        E[ELMS Portal]
+    end
+
+    UI <--> Router
+    Options <--> Router
+    BG --> Alarm
+    Alarm --> Orchestrator
+
+    Orchestrator --> UCAM
+    Orchestrator --> ELMS
+
+    UCAM <--> U
+    ELMS <--> E
+
+    UCAM --> Diff
+    ELMS --> Diff
+
+    Diff --> Dispatcher
+    Dispatcher --> Notification
+    Dispatcher --> Storage
+
+    Orchestrator <--> Storage
+    Router <--> Storage
+```
+
+## 4.3 Component Responsibilities
+
+| Component | Responsibility |
+|---|---|
+| Background Controller | Coordinates background execution |
+| Alarm Manager | Schedules periodic monitoring |
+| Checker Orchestrator | Coordinates portal checking |
+| UCAM Adapter | Handles UCAM-specific integration |
+| ELMS Adapter | Handles ELMS-specific integration |
+| Parser | Extracts structured information |
+| Diff Engine | Identifies newly detected content |
+| Notification Dispatcher | Sends notifications |
+| Message Router | Handles UI-background communication |
+| Storage Manager | Manages local persistent data |
+| Popup | Displays monitoring status |
+| Options Page | Manages available configuration |
+
+## 4.4 Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+
+    participant Alarm as Browser Alarm
+    participant BG as Background Controller
+    participant OR as Orchestrator
+    participant UCAM as UCAM Adapter
+    participant ELMS as ELMS Adapter
+    participant DB as Local Storage
+    participant DIFF as Diff Engine
+    participant NOTIFY as Notification API
+
+    Alarm->>BG: Trigger Monitoring
+    BG->>OR: Start Check
+
+    par UCAM Check
+        OR->>UCAM: Fetch UCAM Data
+        UCAM-->>OR: Parsed UCAM Data
+    and ELMS Check
+        OR->>ELMS: Fetch ELMS Data
+        ELMS-->>OR: Parsed ELMS Data
+    end
+
+    OR->>DB: Load Previous Snapshots
+    DB-->>OR: Existing Data
+
+    OR->>DIFF: Compare Snapshots
+    DIFF-->>OR: Detected Changes
+
+    alt New Content Exists
+        OR->>NOTIFY: Create Notification
+        OR->>DB: Save Updated Snapshot
+    else No New Content
+        OR->>DB: Update Last Checked Time
+    end
+
+    OR-->>BG: Return Monitoring Result
+```
+
+---
+
+# 5. Technology Stack
+
+The following table documents the technology stack described for this project. Confirm exact installed versions in `package.json` and the lockfile.
+
+| Category | Technology | Purpose |
+|---|---|---|
+| Programming Language | TypeScript 5.x | Type-safe application development |
+| Frontend | React 18 | Popup and options interface |
+| Styling | Tailwind CSS 3 | UI styling |
+| Build Tool | Vite 5 | Development and production builds |
+| Extension Framework | CRXJS Vite Plugin | Chromium extension integration |
+| Browser Compatibility | WebExtension APIs / Polyfill | Cross-browser API abstraction |
+| State Management | Zustand | UI state management |
+| HTML Parsing | DOMParser | Portal HTML parsing |
+| Testing | Vitest | Unit and integration testing |
+| UI Testing | Testing Library | Component testing |
+| Icons | Lucide React | Interface icons |
+| Package Manager | pnpm | Dependency management |
+| Extension Standard | Manifest V3 | Browser extension platform |
+
+## 5.1 Why These Technologies?
+
+**TypeScript:** Improves maintainability and catches type-related problems.
+
+**React:** Provides reusable UI components.
+
+**Vite:** Offers fast development and optimized production builds.
+
+**Tailwind CSS:** Allows consistent and maintainable styling.
+
+**WebExtension APIs:** Provide access to browser extension functionality.
+
+**Vitest:** Makes it possible to test parsing, storage, and monitoring logic independently.
+
+---
+
+# 6. Project Directory Structure
+
+The following is the documented target structure. Keep the actual repository structure as the source of truth.
 
 ```text
-su-ad-blocker-pro/
+uiu_notification_pro/
 │
-├── CLAUDE.md
-├── .cursorrules
-├── README.md
-├── package.json
-├── package-lock.json
-├── manifest.json
-│
-├── docs/
-│   ├── PRD.md
-│   ├── SRS.md
-│   ├── ARCHITECTURE.md
-│   ├── TECHNICAL_DOCUMENTATION.md
-│   ├── DATABASE_SCHEMA.md
-│   ├── API_DOCUMENTATION.md
-│   ├── TESTING_GUIDE.md
-│   ├── DEBUGGING_GUIDE.md
-│   ├── SECURITY.md
-│   ├── CHANGELOG.md
-│   ├── 06_Plan.md
-│   └── FINAL_AUDIT_REPORT.md
-│
-├── core/
-│   ├── blocking/
-│   ├── filtering/
-│   ├── rules/
-│   ├── storage/
-│   ├── background/
-│   └── utilities/
-│
-├── dashboard/
-│   ├── dashboard.html
-│   ├── dashboard.css
-│   ├── dashboard.js
-│   ├── error-guard.js
-│   └── pages/
-│
-├── translator/
-│   ├── online-translation-service.js
-│   ├── translation-engine.js
-│   ├── model-loader.js
-│   ├── text-chunker.js
-│   ├── lexicon.js
-│   ├── transformers.min.js
-│   └── pdf-reader/
-│       └── reader.html
-│
-├── content/
-│   ├── youtube/
-│   ├── cosmetic/
-│   └── scripts/
-│
-├── assets/
+├── public/
 │   ├── icons/
-│   ├── images/
-│   └── fonts/
+│   │   ├── icon-16.png
+│   │   ├── icon-32.png
+│   │   ├── icon-48.png
+│   │   └── icon-128.png
+│   │
+│   └── sounds/
+│       └── notify.wav
+│
+├── scripts/
+│   └── build-all.mjs
+│
+├── src/
+│   │
+│   ├── background/
+│   │   ├── alarm-manager.ts
+│   │   ├── checker-orchestrator.ts
+│   │   ├── notification-dispatcher.ts
+│   │   ├── message-router.ts
+│   │   ├── storage-manager.ts
+│   │   └── index.ts
+│   │
+│   ├── adapters/
+│   │   │
+│   │   ├── ucam/
+│   │   │   ├── client.ts
+│   │   │   ├── selectors.ts
+│   │   │   ├── parser.ts
+│   │   │   └── types.ts
+│   │   │
+│   │   └── elms/
+│   │       ├── client.ts
+│   │       ├── selectors.ts
+│   │       ├── parser.ts
+│   │       └── types.ts
+│   │
+│   ├── popup/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   │
+│   ├── options/
+│   │   ├── components/
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   │
+│   ├── shared/
+│   │   ├── constants/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── validators/
+│   │
+│   └── manifest.ts
 │
 ├── tests/
 │   ├── unit/
 │   ├── integration/
-│   └── fixtures/
+│   ├── fixtures/
+│   │   ├── ucam/
+│   │   └── elms/
+│   └── setup.ts
 │
-├── scripts/
-│   ├── build/
-│   └── filters/
+├── dist/
+│   ├── chrome/
+│   └── firefox/
 │
-└── dist/
-    ├── chrome/
-    └── firefox/
+├── build/
+│   ├── chrome-mv3.zip
+│   └── firefox-mv3.zip
+│
+├── .gitignore
+├── package.json
+├── pnpm-lock.yaml
+├── tsconfig.json
+├── vite.config.ts
+├── vitest.config.ts
+├── LICENSE
+└── README.md
 ```
 
-**Directory verification requirement:** The development agent must compare this logical structure against the actual repository. Do not create empty folders just to match this diagram. Update the README when modules are moved or renamed.
+**Important:** Do not create or rename files simply to match this diagram. First inspect the actual source code and build configuration.
 
 ---
 
-# ⚙️ 8. Core Module Documentation
+# 7. Portal Integration Architecture
 
-## 8.1 Background Service Worker
+## 7.1 UCAM Integration
 
-Responsibilities:
-
-- Initialize extension services.
-- Coordinate blocking operations.
-- Handle extension messages.
-- Manage relevant browser events.
-- Maintain settings.
-- Coordinate rule updates.
-
-Debugging checklist:
-
-- Is the service worker registered?
-- Are initialization errors present?
-- Are permissions correct?
-- Are messages being received?
-- Are asynchronous operations handled correctly?
-
-## 8.2 Blocking Engine
+UCAM is integrated through a dedicated adapter.
 
 Responsibilities:
 
-- Process filtering rules.
-- Manage supported DNR rules.
-- Handle static and dynamic rule configurations.
-- Coordinate filter updates.
-- Avoid unnecessary rule recompilation.
+- Check the existing authenticated session.
+- Retrieve supported academic information.
+- Parse the returned HTML.
+- Normalize the extracted information.
+- Return structured data to the monitoring engine.
 
-Debugging checklist:
+Expected integration origin:
 
-- Are rules generated correctly?
-- Are duplicate rules removed?
-- Are invalid rules rejected?
-- Are DNR limits respected?
-- Are allowlist exceptions applied?
+`https://ucam.uiu.ac.bd`
 
-## 8.3 Content Script System
+## 7.2 ELMS Integration
+
+ELMS uses a separate adapter because its underlying portal structure and HTML organization differ from UCAM.
 
 Responsibilities:
 
-- Interact with website DOM.
-- Apply cosmetic filtering.
-- Handle supported website-specific behavior.
-- Coordinate with the background system.
+- Check the existing ELMS session.
+- Retrieve supported course information.
+- Parse supported academic content.
+- Normalize extracted data.
+- Return structured information.
 
-Debugging checklist:
+Expected integration origin:
 
-- Is the content script injected?
-- Are selectors valid?
-- Are DOM operations safe?
-- Are event listeners duplicated?
-- Is the observer lifecycle controlled?
+`https://elms.uiu.ac.bd`
 
-## 8.4 Dashboard
+## 7.3 Adapter Architecture
 
-Responsibilities:
+```mermaid
+classDiagram
+    class PortalAdapter {
+        <<interface>>
+        +checkSession()
+        +fetchData()
+        +parseResponse()
+        +normalizeData()
+    }
 
-- Show extension status.
-- Display blocking statistics.
-- Provide user controls.
-- Manage configuration.
+    class UCAMAdapter {
+        +checkSession()
+        +fetchData()
+        +parseResponse()
+        +normalizeData()
+    }
 
-Important existing files include:
+    class ELMSAdapter {
+        +checkSession()
+        +fetchData()
+        +parseResponse()
+        +normalizeData()
+    }
 
-- dashboard.html
-- dashboard.css
-- dashboard.js
-- error-guard.js
+    class CheckerOrchestrator {
+        +runChecks()
+        +collectResults()
+    }
 
-## 8.5 Filter Management
+    PortalAdapter <|.. UCAMAdapter
+    PortalAdapter <|.. ELMSAdapter
 
-Responsibilities:
+    CheckerOrchestrator --> UCAMAdapter
+    CheckerOrchestrator --> ELMSAdapter
+```
 
-- Load supported filter data.
-- Parse filter entries.
-- Compile supported rules.
-- Deduplicate rules.
-- Maintain update state.
-
-**Protected component:** The existing Ad Blocker Fetcher must not be modified during unrelated debugging or feature development.
+The interface methods above describe the intended responsibilities; actual method names may differ.
 
 ---
 
-# 🔄 9. Ad Blocking Workflow
+# 8. Data and Storage Architecture
 
-## 9.1 Network Blocking Sequence
+The extension uses browser storage rather than a remote database, according to the documented implementation.
 
-```mermaid
-sequenceDiagram
-    participant W as Website
-    participant B as Browser
-    participant D as DNR Engine
-    participant R as Blocking Rules
-    participant S as Statistics
+## 8.1 Storage Responsibilities
 
-    W->>B: Request resource
-    B->>D: Evaluate request
-    D->>R: Match applicable rules
-    R-->>D: Matching result
-    alt Block rule matches
-        D-->>B: Block request
-        B->>S: Record supported blocking event
-    else No blocking rule
-        D-->>B: Allow request
-        B->>W: Continue request
-    end
-```
-
-## 9.2 Cosmetic Filtering
-
-```mermaid
-flowchart TD
-    A["Page Loaded"]
-    B["Content Script Initialized"]
-    C["Identify Relevant DOM Elements"]
-    D["Evaluate Cosmetic Selectors"]
-    E{"Confirmed Ad Element?"}
-    F["Apply Safe Cosmetic Action"]
-    G["Preserve Legitimate UI"]
-    H["Monitor Relevant DOM Changes"]
-
-    A --> B --> C --> D --> E
-    E -->|Yes| F
-    E -->|No| G
-    F --> H
-    G --> H
-```
-
-Cosmetic filtering must never remove essential interactive website components.
-
----
-
-# ▶️ 10. YouTube Integration
-
-YouTube requires special handling because it uses a dynamic Single Page Application architecture.
-
-## 10.1 Main Responsibilities
-
-- Advertisement state detection.
-- Skip control detection.
-- Advertisement overlay handling.
-- Dynamic player monitoring.
-- SPA navigation handling.
-- Search UI protection.
-- Selector health checks.
-
-## 10.2 YouTube Architecture
-
-```mermaid
-flowchart TD
-    A["YouTube Page"]
-    B["YouTube Content Script"]
-    C["Player State Detection"]
-    D["Ad Element Detection"]
-    E["Skip Button Detection"]
-    F["Safe Overlay Handling"]
-    G["Search UI Protection"]
-    H["SPA Navigation Monitor"]
-    I["Regression Checks"]
-
-    A --> B
-    B --> C
-    B --> D
-    D --> E
-    D --> F
-    B --> G
-    B --> H
-    H --> B
-    E --> I
-    F --> I
-    G --> I
-```
-
-## 10.3 YouTube Search Stability Requirements
-
-The following interface elements must remain functional:
-
-- Search input.
-- Search button.
-- Search form.
-- Search suggestions.
-- Keyboard navigation.
-- Search focus behavior.
-
-### Critical debugging targets
-
-```text
-MutationObserver
-CSS injection
-Cosmetic selectors
-DOM removal functions
-Mouse event listeners
-Focus and blur handlers
-YouTube SPA navigation
-Search suggestion lifecycle
-```
-
-### Regression Test
-
-| Test | Expected Result |
+| Storage | Intended Purpose |
 |---|---|
-| Mouse hover | Search stays visible |
-| Click input | Focus works |
-| Type text | Text appears normally |
-| Backspace | Editing works |
-| Enter | Search executes |
-| Suggestions | Dropdown remains visible |
-| SPA navigation | Search remains functional |
+| `storage.local` | Persistent snapshots and settings |
+| `storage.session` | Temporary session data and deduplication |
+| Browser Runtime | Background/UI messaging |
+| Browser Alarms | Periodic monitoring schedule |
 
-### Important Engineering Rule
+## 8.2 Conceptual Data Model
 
-YouTube advertisement cleanup must use precise element identification.
+```mermaid
+erDiagram
+    PORTAL ||--o{ SNAPSHOT : produces
+    SNAPSHOT ||--o{ MONITORED_ITEM : contains
+    MONITORED_ITEM ||--o| NOTIFICATION_STATE : tracks
 
-Never remove a parent container without confirming that it contains only the intended advertisement component.
+    PORTAL {
+        string portalId
+        string portalName
+        string status
+    }
+
+    SNAPSHOT {
+        string snapshotId
+        string portalId
+        datetime lastChecked
+        string contentHash
+    }
+
+    MONITORED_ITEM {
+        string itemId
+        string title
+        string category
+        string sourceUrl
+    }
+
+    NOTIFICATION_STATE {
+        string itemId
+        boolean notified
+        datetime notifiedAt
+    }
+```
+
+This is a logical model, not a claim that the browser stores relational database tables.
+
+## 8.3 Change Detection Logic
+
+```mermaid
+flowchart TD
+    A[Receive New Portal Data] --> B[Normalize Data]
+    B --> C[Generate Stable Item Identifiers]
+    C --> D[Load Previous Snapshot]
+    D --> E[Compare Existing and New Items]
+    E --> F{New Items Found?}
+
+    F -->|Yes| G[Prepare Notifications]
+    F -->|No| H[Update Check Timestamp]
+
+    G --> I[Dispatch Notifications]
+    I --> J[Save Snapshot]
+
+    H --> J
+```
+
+## 8.4 Important Data Integrity Rules
+
+- Failed portal requests must not overwrite valid snapshots with empty data.
+- An expired session must not be interpreted as an empty academic feed.
+- Stable item identifiers should be used for comparison.
+- Existing items should not repeatedly trigger notifications.
+- Storage writes should be handled safely.
+- Old snapshots should be cleaned up only according to an explicit retention policy.
 
 ---
 
-# 🌐 11. Translation Architecture
+# 9. Security and Privacy Model
 
-The translation subsystem contains text processing and translation service/model infrastructure.
+## 9.1 Password-Free Authentication
 
-## 11.1 Main Components
+The extension does not require students to enter their university credentials into the extension.
 
-| Component | Responsibility |
+Instead, it uses the existing authenticated browser session.
+
+Conceptual flow:
+
+```mermaid
+flowchart TD
+    A[Student Logs into UCAM/ELMS] --> B[Browser Stores Session]
+    B --> C[Extension Checks Existing Session]
+    C --> D{Valid Session?}
+
+    D -->|Yes| E[Retrieve Authorized Portal Data]
+    D -->|No| F[Show Login Required Status]
+
+    E --> G[Process Data Locally]
+    G --> H[Save Local Snapshot]
+```
+
+## 9.2 Security Principles
+
+1. Never request or store university passwords.
+2. Never transmit session cookies to an external server.
+3. Never log session cookie values.
+4. Restrict network access to the intended university portals.
+5. Validate incoming messages between extension components.
+6. Avoid inserting untrusted portal HTML directly into the UI.
+7. Use safe DOM rendering.
+8. Keep permissions limited to actual requirements.
+9. Do not expose unnecessary personal or academic information in notifications.
+
+## 9.3 Required Permission Review
+
+Review the actual manifest before every release.
+
+Potential permissions include:
+
+| Permission | Purpose |
 |---|---|
-| Translation Engine | Coordinates translation |
-| Online Translation Service | Online translation integration |
-| Model Loader | Model initialization where enabled |
-| Text Chunker | Splits large text |
-| Lexicon | Language-related processing |
-| Transformers.js | ML infrastructure |
-| ONNX Runtime Web | Browser model execution |
-| Translation History | Stores translation records |
+| `alarms` | Periodic monitoring |
+| `storage` | Local data persistence |
+| `notifications` | Desktop notifications |
+| `cookies` | Access existing portal sessions |
+| `host_permissions` | Access approved university portals |
 
-## 11.2 Translation Flow
-
-```mermaid
-flowchart TD
-    A["User Selects Text"]
-    B["Capture Selected Text"]
-    C["Validate Input"]
-    D["Text Chunker"]
-    E{"Translation Mode"}
-    F["Online Translation Service"]
-    G["Local Model"]
-    H["Process Result"]
-    I["Display Translation"]
-    J["Save History"]
-
-    A --> B --> C --> D --> E
-    E -->|Online| F
-    E -->|Local, if configured| G
-    F --> H
-    G --> H
-    H --> I --> J
-```
-
-The actual active translation mode must be verified in the current implementation. Model availability and browser memory constraints may affect local inference.
-
-## 11.3 Translation Debugging
-
-Check:
-
-- Selected text capture.
-- Empty input handling.
-- Chunk boundaries.
-- API errors.
-- Model loading failures.
-- ONNX runtime initialization.
-- Bengali Unicode rendering.
-- Translation history persistence.
+Only request permissions that are actually required.
 
 ---
 
-# 📄 12. PDF Reader Architecture
+# 10. Browser Compatibility
 
-The integrated PDF reader uses Mozilla PDF.js.
+The project targets Chromium-based browsers and Firefox.
 
-## 12.1 Workflow
-
-```mermaid
-flowchart TD
-    A["Open PDF Reader"]
-    B["Load PDF Document"]
-    C["PDF.js Initialization"]
-    D["Read Document Metadata"]
-    E["Render Page"]
-    F["Display PDF"]
-    G["Navigation and Zoom"]
-
-    A --> B --> C --> D --> E --> F --> G
-```
-
-## 12.2 Debugging Checklist
-
-- Verify PDF.js script loading.
-- Check worker configuration.
-- Check PDF file access.
-- Check document loading errors.
-- Verify page rendering.
-- Verify navigation and zoom.
-- Check memory usage for large PDFs.
-
----
-
-# 💾 13. Data Storage and Management
-
-The extension prioritizes browser-local storage.
-
-Potential storage categories include:
-
-| Data | Storage Responsibility |
-|---|---|
-| User Settings | Configuration |
-| Allowlist | Site exceptions |
-| Custom Rules | User-defined filters |
-| Translation History | Past translations |
-| Blocking Statistics | Usage metrics |
-| Filter Metadata | Update information |
-
-### Data Flow
-
-```mermaid
-flowchart TD
-    A["Extension UI"]
-    B["Background Logic"]
-    C["Storage API"]
-    D["Settings"]
-    E["Allowlist"]
-    F["Translation History"]
-    G["Statistics"]
-    H["Filter Metadata"]
-
-    A --> B --> C
-    C --> D
-    C --> E
-    C --> F
-    C --> G
-    C --> H
-```
-
-The actual storage keys and schemas must be documented from the source code. Avoid introducing duplicate storage systems.
-
----
-
-# 🌍 14. Browser Compatibility
-
-| Browser | Target | Verification |
+| Browser | Distribution | Notes |
 |---|---|---|
-| Google Chrome | Primary | Required |
-| Microsoft Edge | Chromium-based | Required |
-| Brave | Chromium-based | Required |
-| Opera | Chromium-based | Required |
-| Firefox | Secondary | Required |
+| Google Chrome | Chromium build | Primary target |
+| Microsoft Edge | Chromium build | Compatibility testing required |
+| Brave | Chromium build | Compatibility testing required |
+| Opera | Chromium build | Compatibility testing required |
+| Mozilla Firefox | Firefox build | Browser-specific manifest/API handling |
 
-### Compatibility Considerations
+## 10.1 Browser-Specific Considerations
 
-- Manifest differences.
-- Background execution differences.
-- Storage APIs.
-- Declarative Net Request support.
-- Content script injection.
-- Browser messaging.
-- Extension permissions.
+Manifest V3 implementations are not identical across browsers.
 
-Do not assume that successful Chromium builds guarantee Firefox functionality.
+Important areas to verify:
+
+- Background execution model.
+- Manifest configuration.
+- Browser API namespaces.
+- Cookie permissions.
+- Alarm scheduling.
+- Notification behavior.
+- Audio playback.
+- Extension packaging.
+
+## 10.2 Firefox Custom Sound Limitation
+
+Custom sound playback requires special attention in Firefox.
+
+Firefox does not provide the Chromium `chrome.offscreen` API as a drop-in equivalent.
+
+A hidden extension page or another Firefox-compatible audio architecture may be investigated, but an ordinary non-persistent event page should not be assumed to support reliable background audio playback.
+
+Autoplay restrictions and background lifecycle behavior must be tested on the actual target Firefox versions.
+
+The system should always retain a reliable notification fallback even if custom sound playback is unavailable.
 
 ---
 
-# 💻 15. Installation and Setup
+# 11. Installation and Setup
 
-## 15.1 Prerequisites
+## 11.1 Prerequisites
 
-| Software | Recommended |
+| Software | Requirement |
 |---|---|
-| Node.js | 22 LTS |
-| npm | Version compatible with lockfile |
-| Git | Latest stable |
-| Google Chrome | Current stable |
-| Mozilla Firefox | Current stable |
-| Code Editor | VS Code / Antigravity / Cursor |
-| Operating System | Windows, Linux, macOS |
+| Node.js | 20 or newer |
+| pnpm | 9 or newer |
+| Git | Recommended |
+| Chrome/Firefox | For local testing |
 
-## 15.2 Clone the Project
+Check installed versions:
+
+```bash
+node --version
+pnpm --version
+git --version
+```
+
+## 11.2 Clone Repository
 
 ```bash
 git clone YOUR_REPOSITORY_URL
-cd su-ad-blocker-pro
 ```
-
-Replace the repository URL with the actual Git repository.
-
-## 15.3 Install Dependencies
 
 ```bash
-npm ci
+cd uiu_notification_pro
 ```
 
-If installation fails, inspect the error before changing dependency versions.
+Replace `YOUR_REPOSITORY_URL` with the actual repository URL.
 
-## 15.4 Inspect Available Scripts
+## 11.3 Install Dependencies
 
 ```bash
-npm run
+pnpm install
 ```
 
-This is important because the actual package.json is the authoritative source for available commands.
+## 11.4 Development Mode
 
----
-
-# 🔨 16. Build and Deployment
-
-## 16.1 Chrome Build
+Chrome:
 
 ```bash
-npm run build:chrome
+pnpm dev:chrome
 ```
 
-Expected output directory:
-
-```text
-dist/chrome/
-```
-
-## 16.2 Firefox Build
+Firefox:
 
 ```bash
-npm run build:firefox
+pnpm dev:firefox
 ```
 
-Expected output directory:
+These commands assume the corresponding scripts exist in `package.json`.
 
-```text
-dist/firefox/
-```
+## 11.5 Load Extension in Chrome
 
-## 16.3 Filter Maintenance
+1. Open `chrome://extensions/`.
+2. Enable Developer Mode.
+3. Click **Load unpacked**.
+4. Select the generated `dist/chrome` directory.
+5. Verify that the extension loads successfully.
 
-If these scripts exist in package.json:
-
-```bash
-npm run update-lists
-npm run build-rulesets
-```
-
-Run them according to the project's filter maintenance workflow.
-
-## 16.4 Load in Chrome
-
-1. Open `chrome://extensions`.
-2. Enable Developer mode.
-3. Select Load unpacked.
-4. Choose `dist/chrome`.
-5. Reload the extension after rebuilding.
-
-For Edge:
-
-```text
-edge://extensions
-```
-
-## 16.5 Load in Firefox
+## 11.6 Load Extension in Firefox
 
 1. Open `about:debugging#/runtime/this-firefox`.
-2. Select Load Temporary Add-on.
+2. Select **Load Temporary Add-on**.
 3. Select `dist/firefox/manifest.json`.
-
-Firefox temporary installations may need to be loaded again after restarting the browser.
+4. Verify that the extension loads successfully.
 
 ---
 
-# 🧪 17. Testing Strategy
+# 12. Build and Distribution
 
-Testing must cover unit, integration, build, and real browser behavior.
-
-## 17.1 Testing Pyramid
-
-```mermaid
-flowchart TD
-    A["Manual Browser Tests"]
-    B["Integration Tests"]
-    C["Unit Tests"]
-    D["Static Analysis"]
-
-    A --> B
-    B --> C
-    C --> D
-```
-
-## 17.2 Unit Testing
-
-Test:
-
-- Filter parsing.
-- Rule generation.
-- Rule validation.
-- Allowlist matching.
-- Storage utilities.
-- Text chunking.
-- Translation processing.
-
-## 17.3 Integration Testing
-
-Test:
-
-- Background messaging.
-- DNR configuration.
-- Content script communication.
-- Storage persistence.
-- Popup functionality.
-- Filter updates.
-
-## 17.4 Browser Testing
-
-Test:
-
-- Real advertisement blocking.
-- YouTube player behavior.
-- Search functionality.
-- SPA navigation.
-- Settings persistence.
-- Cross-browser compatibility.
-
-## 17.5 Playwright
-
-Playwright is an optional automated browser testing tool.
-
-Install browsers only when the environment supports it:
+## 12.1 Build All Browser Versions
 
 ```bash
-npx playwright install chromium firefox
+pnpm build:all
 ```
 
-If installation is unavailable, continue with other tests.
+Expected distribution structure:
 
-Do not report automated E2E testing as successful when it has not run.
+```text
+dist/
+├── chrome/
+│   └── manifest.json
+│
+└── firefox/
+    └── manifest.json
+
+build/
+├── chrome-mv3.zip
+└── firefox-mv3.zip
+```
+
+Actual output locations depend on the build script.
+
+## 12.2 Release Checklist
+
+- [ ] TypeScript compilation succeeds.
+- [ ] Production build succeeds.
+- [ ] Chrome manifest is valid.
+- [ ] Firefox manifest is valid.
+- [ ] Required assets exist.
+- [ ] No missing imports.
+- [ ] No unexpected console errors.
+- [ ] UCAM session detection works.
+- [ ] ELMS session detection works.
+- [ ] Change detection works.
+- [ ] Duplicate notifications are prevented.
+- [ ] Storage survives browser restart.
+- [ ] Notification behavior is verified.
+- [ ] Firefox audio limitation is documented.
+- [ ] ZIP archives contain the correct files.
+- [ ] Fresh ZIP installations have been tested.
 
 ---
 
-# 🐞 18. Debugging Handbook
+# 13. Testing Strategy
 
-This section is especially important for future maintenance.
+Testing should be performed at multiple levels.
 
-## 18.1 General Debugging Workflow
+## 13.1 Testing Pyramid
 
 ```mermaid
 flowchart TD
-    A["Bug Reported"]
-    B["Reproduce the Bug"]
-    C["Identify Affected Module"]
-    D["Inspect Source Code"]
-    E["Find Root Cause"]
-    F["Implement Minimal Fix"]
-    G["Run Regression Tests"]
-    H{"All Tests Pass?"}
-    I["Document the Fix"]
-    J["Continue Debugging"]
+    A[Testing Strategy]
 
-    A --> B --> C --> D --> E --> F --> G --> H
-    H -->|Yes| I
-    H -->|No| J
-    J --> D
+    A --> B[Unit Tests]
+    A --> C[Integration Tests]
+    A --> D[Browser Tests]
+    A --> E[Release Tests]
+
+    B --> B1[Parser Tests]
+    B --> B2[Diff Engine Tests]
+    B --> B3[Storage Tests]
+
+    C --> C1[UCAM Adapter]
+    C --> C2[ELMS Adapter]
+    C --> C3[Notification Flow]
+
+    D --> D1[Chrome]
+    D --> D2[Firefox]
+
+    E --> E1[Production Build]
+    E --> E2[ZIP Validation]
+    E --> E3[Fresh Installation]
 ```
 
-## 18.2 Chrome Debugging
+## 13.2 Unit Testing
 
-Open:
+Test individual modules independently.
 
-```text
-chrome://extensions
-```
+Recommended test cases:
 
-Check:
-
-- Extension errors.
-- Service worker inspection.
-- Permissions.
-- Manifest errors.
-- Reload behavior.
-
-For content scripts, open the affected website and use Developer Tools.
-
-## 18.3 Firefox Debugging
-
-Open:
-
-```text
-about:debugging#/runtime/this-firefox
-```
-
-Inspect:
-
-- Extension console.
-- Background execution.
-- Content script errors.
-- API compatibility.
-
-## 18.4 YouTube Debugging
-
-When YouTube functionality breaks, inspect these areas first:
-
-1. Content script injection.
-2. Selector definitions.
-3. MutationObserver callbacks.
-4. DOM cleanup functions.
-5. Cosmetic CSS.
-6. SPA navigation handlers.
-7. Event listener lifecycle.
-
-### Search Bar Disappearing Bug
-
-If the search bar disappears when hovered or focused:
-
-```text
-Investigate:
-    YouTube content scripts
-    Cosmetic filtering
-    MutationObserver
-    remove() / removeChild()
-    CSS injection
-    Search input lifecycle
-    Parent container removal
-    Mouse and focus event listeners
-```
-
-Never solve this by disabling all YouTube advertisement protection.
-
-## 18.5 Performance Debugging
-
-Use Chrome DevTools Performance and Memory panels.
-
-Check:
-
-- CPU usage.
-- Memory growth.
-- Long-running tasks.
-- Repeated DOM queries.
-- Excessive observer callbacks.
-- Duplicate event listeners.
-- Unnecessary background operations.
-
----
-
-# 🔐 19. Security and Privacy
-
-## 19.1 Security Principles
-
-- Request only necessary browser permissions.
-- Keep sensitive data local.
-- Do not expose private API credentials.
-- Validate external filter data.
-- Avoid unsafe DOM injection.
-- Avoid executing downloaded JavaScript.
-- Use safe messaging practices.
-- Handle malformed input.
-- Avoid unnecessary telemetry.
-
-## 19.2 Manifest V3 Security
-
-Remote executable code must not be downloaded and executed.
-
-Filter-list updates should be treated as data and validated before being compiled into supported browser rules.
-
-## 19.3 Privacy
-
-The extension should not transmit browsing history, selected text, or personal information unnecessarily.
-
-Any external translation service or remote filter source must be documented transparently.
-
----
-
-# ⚡ 20. Performance Optimization
-
-Performance improvements should focus on measurable bottlenecks.
-
-| Area | Optimization |
+| Module | Test Case |
 |---|---|
-| Network Blocking | Browser-native DNR |
-| Filter Processing | Deduplication and efficient parsing |
-| DOM Processing | Targeted selectors |
-| MutationObserver | Scoped observation |
-| Background | Minimal unnecessary work |
-| Storage | Efficient updates |
-| UI | Lightweight rendering |
-| Translation | Controlled chunk sizes |
-| PDF Reader | Efficient page rendering |
+| UCAM Parser | Valid HTML |
+| UCAM Parser | Missing elements |
+| ELMS Parser | Valid course content |
+| ELMS Parser | Empty response |
+| Diff Engine | New item detected |
+| Diff Engine | Existing item ignored |
+| Diff Engine | Duplicate item ignored |
+| Storage Manager | Save and retrieve |
+| Storage Manager | Corrupted data handling |
+| Notification Dispatcher | Successful dispatch |
 
-### Performance Rules
+## 13.3 Integration Testing
 
-1. Avoid continuous full-document scanning.
-2. Avoid unnecessary setInterval loops.
-3. Do not recreate unchanged filtering rules.
-4. Avoid excessive synchronous DOM manipulation.
-5. Disconnect observers when no longer required.
-6. Avoid duplicate event listeners.
-7. Measure before and after optimization.
+Verify that the complete monitoring flow works.
+
+Example:
+
+```mermaid
+flowchart LR
+    A[Mock Portal HTML] --> B[Portal Parser]
+    B --> C[Normalized Data]
+    C --> D[Diff Engine]
+    D --> E[Notification Dispatcher]
+    E --> F[Mock Notification API]
+```
+
+Use sanitized HTML fixtures instead of real student information.
+
+## 13.4 Build Testing
+
+Test both browser builds independently.
+
+A successful build does not automatically mean that the extension works correctly in the browser.
+
+Manual browser testing is mandatory.
 
 ---
 
-# ⚠️ 21. Known Limitations
+# 14. Debugging and Troubleshooting
 
-The following limitations should be considered during development:
+This section is intended to help future developers identify problems without having to understand the entire codebase first.
 
-- YouTube can change its advertisement and player implementation.
-- Some ads may not be skippable through available browser interfaces.
-- Browser-native rule limits vary.
-- Firefox and Chromium APIs have differences.
-- Large translation models may require substantial memory.
-- Some websites may break under aggressive cosmetic filtering.
-- Playwright may be unavailable in restricted environments.
-- Successful builds do not prove real-world blocking effectiveness.
+## 14.1 Debugging Workflow
 
-Document newly discovered limitations in the project's issue tracker or debugging report.
+```mermaid
+flowchart TD
+    A[Problem Reported] --> B[Reproduce the Problem]
+    B --> C[Check Browser Console]
+    C --> D[Check Background Logs]
+    D --> E[Identify Responsible Module]
+    E --> F[Inspect Input and Output]
+    F --> G[Write or Update Tests]
+    G --> H[Implement Fix]
+    H --> I[Run Full Test Suite]
+    I --> J[Build All Browsers]
+    J --> K[Manual Verification]
+    K --> L[Document the Fix]
+```
 
----
+## 14.2 UCAM Notifications Not Working
 
-# 🗺️ 22. Development Guidelines
+**Possible causes:**
 
-## 22.1 Before Modifying Code
+- UCAM HTML structure changed.
+- Session expired.
+- Cookie access failed.
+- Portal request failed.
+- Parser selectors became outdated.
+- The change detection engine rejected the new content.
 
-1. Read project documentation.
-2. Inspect relevant modules.
-3. Understand dependencies.
-4. Identify existing behavior.
-5. Check Git status.
-6. Create a debugging plan.
+**Debugging procedure:**
 
-## 22.2 While Modifying Code
+1. Open UCAM.
+2. Log in manually.
+3. Open Developer Tools.
+4. Inspect the relevant page.
+5. Inspect the HTML structure.
+6. Compare it with the current parser selectors.
+7. Check the UCAM adapter's output.
+8. Update the relevant parser.
+9. Add a sanitized fixture.
+10. Run parser tests.
 
-- Preserve existing features.
-- Make minimal, targeted changes.
-- Avoid unnecessary dependencies.
-- Avoid unrelated refactoring.
-- Add tests where appropriate.
-- Update relevant documentation.
+Useful console command:
 
-## 22.3 After Modifying Code
+```javascript
+document.querySelectorAll("table").forEach((table) => {
+  console.log({
+    id: table.id,
+    className: table.className,
+    rows: table.rows.length
+  });
+});
+```
+
+## 14.3 ELMS Notifications Not Working
+
+**Possible causes:**
+
+- ELMS session expired.
+- Moodle session cookie changed.
+- Moodle page structure changed.
+- Course content is loaded dynamically.
+- Parser selectors are outdated.
+
+**Debugging procedure:**
+
+1. Open ELMS.
+2. Confirm that the student is logged in.
+3. Inspect the session status without exposing cookie values.
+4. Inspect the relevant course page.
+5. Compare the current HTML with the ELMS fixtures.
+6. Inspect the parser output.
+7. Update the adapter if necessary.
+8. Run ELMS integration tests.
+
+Do not publish session cookie values in screenshots, logs, or GitHub issues.
+
+## 14.4 Session Expired
+
+**Symptoms:**
+
+- Monitoring status indicates login required.
+- Portal requests redirect to a login page.
+- No new academic information is collected.
+
+**Solution:**
+
+1. Open the corresponding portal.
+2. Log in manually.
+3. Confirm the session is valid.
+4. Trigger a manual check if supported.
+5. Otherwise wait for the next scheduled check.
+
+The extension should distinguish an expired session from a valid but empty portal response.
+
+## 14.5 Background Service Worker Problems
+
+For Chrome:
+
+1. Open `chrome://extensions/`.
+2. Find UniPortal Monitor.
+3. Click the Service Worker inspection link.
+4. Open the Console.
+5. Check initialization and alarm errors.
+
+Common things to inspect:
+
+- Alarm creation.
+- Missing permissions.
+- Unhandled promise rejections.
+- Invalid browser API calls.
+- Background script initialization.
+- Storage access failures.
+
+For Firefox, inspect the extension using `about:debugging` and its available debugging tools.
+
+## 14.6 Notifications Not Appearing
+
+Check:
+
+- Notification permission.
+- Operating system notification settings.
+- Browser notification settings.
+- Notification dispatcher execution.
+- Duplicate suppression logic.
+- Browser-specific API compatibility.
+
+## 14.7 Sound Not Playing
+
+**Chromium:**
+
+- Inspect offscreen document initialization if used.
+- Check audio file paths.
+- Verify runtime messaging.
+- Inspect audio playback errors.
+
+**Firefox:**
+
+- Verify the Firefox-specific audio implementation.
+- Inspect autoplay restrictions.
+- Verify background page lifecycle behavior.
+- Test the fallback notification mechanism.
+
+Do not assume that a successful build proves sound playback works.
+
+## 14.8 Build Errors
 
 Run:
 
 ```bash
-npm run
+pnpm install
 ```
 
-Then execute the applicable checks listed in package.json.
-
-Build:
+Then:
 
 ```bash
-npm run build:chrome
-npm run build:firefox
+pnpm build:all
 ```
 
-Review:
+If the build fails:
 
-```bash
-git status
-git diff
-```
+1. Read the first meaningful error.
+2. Identify the affected module.
+3. Check imports and dependencies.
+4. Check manifest generation.
+5. Check TypeScript compilation.
+6. Verify static assets.
+7. Rebuild both browser targets.
 
-## 22.4 Protected Component: Ad Blocker Fetcher
-
-The existing Ad Blocker Fetcher is a protected component.
-
-Unless explicitly authorized:
-
-- Do not refactor it.
-- Do not change its implementation.
-- Do not change its configuration.
-- Do not replace its fetching mechanism.
-
-For unrelated bug fixes, verify its integrity through Git diff and file hashes.
+Avoid deleting the lockfile or changing dependency versions as the first troubleshooting step.
 
 ---
 
-# 🔧 23. Troubleshooting
+# 15. Maintenance and Future Improvements
 
-| Problem | Possible Cause | Investigation |
-|---|---|---|
-| Extension not loading | Manifest error | Validate manifest |
-| Chrome build fails | Dependency or compilation issue | Inspect build output |
-| Firefox build fails | Browser-specific incompatibility | Inspect Firefox manifest |
-| Ads still visible | Missing or outdated rules | Inspect rule generation |
-| YouTube ads not handled | Player DOM changes | Inspect YouTube integration |
-| Search bar disappears | DOM/CSS conflict | Inspect observers and cleanup |
-| Statistics incorrect | Event accounting issue | Inspect statistics logic |
-| Settings not saved | Storage error | Inspect storage operations |
-| PDF not loading | PDF.js worker issue | Inspect worker configuration |
-| Translation fails | Service/model initialization issue | Inspect translation logs |
-| High CPU usage | Excessive DOM monitoring | Profile observers |
-| Playwright installation fails | Browser installation environment | Continue with available tests |
+## 15.1 Recommended Maintenance Priorities
 
-### Windows PowerShell Commands
-
-```powershell
-node -v
-npm -v
-git --version
-npm run
-```
-
-Check the Playwright installation:
-
-```powershell
-npx playwright --version
-npx playwright install --list
-```
-
-These checks are optional if Playwright is not being used.
-
----
-
-# 🚀 24. Future Development Roadmap
-
-The following roadmap represents proposed improvements, not claims that these features are already complete.
-
-```mermaid
-flowchart TD
-    A["Current Project"]
-    B["Stabilize Core Blocking"]
-    C["Improve YouTube Compatibility"]
-    D["Performance Optimization"]
-    E["Cross-Browser Verification"]
-    F["Advanced Testing"]
-    G["Security Audit"]
-    H["Stable Release"]
-
-    A --> B --> C --> D --> E --> F --> G --> H
-```
-
-### Priority-Based Roadmap
-
-| Priority | Development Area |
+| Priority | Improvement |
 |---|---|
-| P0 | Core ad-blocking reliability |
-| P0 | YouTube search stability |
-| P0 | Preserve existing features |
-| P1 | YouTube ad detection improvements |
-| P1 | Performance optimization |
-| P1 | Cross-browser testing |
-| P2 | Advanced diagnostics |
-| P2 | Improved statistics |
-| P3 | Additional privacy features |
+| Critical | Maintain UCAM and ELMS parser compatibility |
+| Critical | Preserve authenticated-session security |
+| High | Improve error classification |
+| High | Expand automated test coverage |
+| High | Verify Firefox-specific behavior |
+| Medium | Add detailed monitoring history |
+| Medium | Improve notification customization |
+| Medium | Add exportable diagnostic logs |
+| Low | Add additional university portals |
 
----
+## 15.2 Recommended Error Categories
 
-# 🤝 25. Contribution Guidelines
+Use structured error categories rather than generic error messages.
 
-Contributors should follow these guidelines:
-
-1. Understand the existing architecture before making changes.
-2. Avoid unnecessary refactoring.
-3. Preserve backward compatibility.
-4. Add tests for bug fixes.
-5. Document configuration changes.
-6. Verify both Chrome and Firefox builds.
-7. Provide reproducible bug reports.
-8. Never claim untested functionality is working.
-
-### Bug Report Template
-
-```text
-Bug Title:
-
-Browser:
-Browser Version:
-Extension Version:
-
-Affected Module:
-
-Steps to Reproduce:
-
-Expected Behavior:
-
-Actual Behavior:
-
-Console Errors:
-
-Screenshots / Logs:
-
-Reproduction Frequency:
+```typescript
+type MonitoringError =
+  | "SESSION_EXPIRED"
+  | "NETWORK_ERROR"
+  | "HTTP_ERROR"
+  | "PARSER_ERROR"
+  | "INVALID_RESPONSE"
+  | "STORAGE_ERROR"
+  | "NOTIFICATION_ERROR"
+  | "UNKNOWN_ERROR";
 ```
 
-### Feature Request Template
+Adapt the type to the actual existing implementation.
+
+## 15.3 Recommended Development Principles
+
+- Keep portal-specific code isolated.
+- Avoid hardcoding selectors throughout the application.
+- Use shared TypeScript interfaces.
+- Keep parsing functions deterministic.
+- Maintain sanitized test fixtures.
+- Avoid unnecessary network requests.
+- Keep notification deduplication reliable.
+- Never silently convert failures into empty snapshots.
+- Document browser-specific workarounds.
+- Test every production build before distribution.
+
+---
+
+# 16. Known Limitations
+
+## 16.1 Portal Structure Dependency
+
+The extension depends on the HTML structure of UCAM and ELMS.
+
+If either portal changes its HTML structure, its corresponding parser may need to be updated.
+
+## 16.2 Session Dependency
+
+The extension requires an existing valid authenticated session.
+
+If a student logs out or the session expires, monitoring cannot retrieve protected information until the student logs in again.
+
+## 16.3 Monitoring Interval
+
+The documented monitoring interval is 30 minutes.
+
+Browser scheduling APIs may delay execution depending on browser state and system conditions. Therefore, a 30-minute interval should not be treated as an exact real-time guarantee.
+
+## 16.4 Firefox Audio
+
+Custom background sound playback is browser-dependent.
+
+Firefox requires a separately verified implementation or a fallback notification strategy.
+
+## 16.5 No Official Portal API Assumption
+
+The documented implementation uses portal HTML integration rather than relying on a confirmed public API.
+
+Changes to portal access policies or website behavior may affect functionality.
+
+---
+
+# 17. Contribution Guidelines
+
+Contributions should preserve the existing architecture and security principles.
+
+Before modifying the project:
+
+1. Read the relevant module.
+2. Understand existing functionality.
+3. Identify the root cause of the issue.
+4. Avoid unnecessary architectural changes.
+5. Add or update tests.
+6. Verify both browser builds.
+7. Update documentation.
+
+## Suggested Branch Naming
 
 ```text
-Feature Name:
+feature/feature-name
+fix/bug-name
+docs/documentation-update
+refactor/module-name
+test/test-description
+```
 
-Problem:
+## Commit Message Examples
 
-Proposed Solution:
-
-Affected Modules:
-
-Expected Benefits:
-
-Performance Considerations:
-
-Security Considerations:
-
-Testing Requirements:
+```text
+feat: improve ELMS monitoring
+fix: handle expired UCAM sessions
+fix: prevent duplicate notifications
+test: add ELMS parser fixtures
+docs: improve debugging documentation
+refactor: separate portal adapters
 ```
 
 ---
 
-# 📜 License and Usage
+# 18. License
 
-**Project:** Su Ad Blocker Pro
+This project is intended to be distributed under the MIT License if the repository contains the corresponding LICENSE file.
 
-**Usage:** Personal development project.
-
-Unless a separate license is added by the project owner, do not assume that this repository grants permission for redistribution or commercial use.
-
-Third-party libraries and assets remain subject to their respective licenses.
+See `LICENSE` for the actual licensing terms.
 
 ---
 
-# 👨‍💻 Project Maintainer
+# 19. Disclaimer
 
-**Su Ad Blocker Pro**
+UniPortal Monitor is an independent student-developed project.
 
-*Browse Faster. Stay Ad-Free. Protect Your Privacy.*
+It is not officially affiliated with, endorsed by, or maintained by United International University.
 
-Built with a focus on performance, privacy, reliability, and maintainability.
+The extension is designed to assist students in monitoring information available through their own authenticated university accounts.
+
+Users are responsible for complying with the university's portal usage policies and applicable terms of service.
+
+---
+
+# 20. Final Project Documentation Checklist
+
+Use this checklist when maintaining or releasing the project.
+
+### Architecture
+- [ ] UCAM adapter documented.
+- [ ] ELMS adapter documented.
+- [ ] Background workflow documented.
+- [ ] Storage structure documented.
+- [ ] Notification workflow documented.
+
+### Security
+- [ ] No password storage.
+- [ ] No cookie logging.
+- [ ] Host permissions reviewed.
+- [ ] Message validation reviewed.
+- [ ] Sensitive information excluded from diagnostics.
+
+### Quality Assurance
+- [ ] Unit tests pass.
+- [ ] Integration tests pass.
+- [ ] Chrome build passes.
+- [ ] Firefox build passes.
+- [ ] Manual browser testing completed.
+- [ ] No unexpected console errors.
+
+### Release
+- [ ] Manifest files validated.
+- [ ] Icons included.
+- [ ] Audio assets included where supported.
+- [ ] Production ZIP files generated.
+- [ ] Fresh installation verified.
+- [ ] README updated.
 
 ---
 
 <p align="center">
-  <strong>SU AD BLOCKER PRO</strong><br/>
-  <sub>Fast Browsing. Better Privacy. Smarter Blocking.</sub>
+  <b>UniPortal Monitor</b>
+  <br />
+  Making University Information Easier to Follow.
+  <br />
+  <i>Built for students, designed for reliability.</i>
 </p>
-
