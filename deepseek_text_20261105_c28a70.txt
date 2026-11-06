@@ -1,0 +1,25 @@
+alarm fires
+    │
+    ▼
+run adapters → collect updates[]
+    │
+    ▼
+filter by notifyOn prefs  →  filtered[]
+    │
+    ▼
+dedup against notified-ids  →  fresh[]
+    │
+    ▼
+quietHours? ──yes──▶ skip desktop; badge+list only
+    │no
+    ▼
+fresh.length >= 3 ? ──yes──▶ send summary notification
+    │no
+    ▼
+for each in fresh (max 5) → send individual notification
+    │
+    ▼
+add ids to notified-ids (session)
+    │
+    ▼
+update badge count

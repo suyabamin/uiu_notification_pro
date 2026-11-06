@@ -1,0 +1,33 @@
+
+---
+
+## 📄 `docs/TESTING.md`
+
+```markdown
+# Testing Strategy
+
+## 1. Unit Tests (Vitest)
+
+| File | What it tests |
+|------|---------------|
+| `hash.test.ts` | SHA-256 output stability across inputs |
+| `ucam-parser.test.ts` | Parse fixed HTML fixtures → expected items |
+| `ucam-diff.test.ts` | New-item detection; ignore removals; handle modified |
+| `elms-diff.test.ts` | Diff against known Moodle API responses |
+| `notification-dispatcher.test.ts` | Templates, coalescing, quiet hours, dedup |
+
+### Example: parser test shape
+
+```typescript
+import { parseNotices } from '@/adapters/ucam/parser';
+import noticesHtml from '../fixtures/ucam-notices.html?raw';
+
+test('parses notices correctly', () => {
+  const items = parseNotices(noticesHtml);
+  expect(items).toHaveLength(3);
+  expect(items[0]).toMatchObject({
+    id: expect.stringMatching(/^ucam:notice:/),
+    kind: 'notice',
+    title: expect.any(String),
+  });
+});

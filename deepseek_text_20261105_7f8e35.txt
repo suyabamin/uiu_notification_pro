@@ -1,0 +1,11 @@
+tests/fixtures/
+├── ucam-notices.html
+├── ucam-routine.html
+├── ucam-results.html
+├── ucam-attendance.html
+├── ucam-materials.html
+├── ucam-login-form.html
+├── elms-course-contents.json
+├── elms-updates-since.json
+├── elms-assignments.json
+└── elms-site-info.json

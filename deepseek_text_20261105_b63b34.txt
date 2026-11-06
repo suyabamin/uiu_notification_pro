@@ -1,0 +1,37 @@
+
+---
+
+## 📄 `docs/UI_UX_SPEC.md`
+
+```markdown
+# UI/UX Specification
+
+## Design System
+
+### Colors (CSS variables)
+
+```css
+:root {
+  --brand-500: #0B6E4F;
+  --brand-600: #085041;
+  --accent-500: #F59E0B;
+  --danger-500: #DC2626;
+  --success-500: #16A34A;
+  --bg-100: #F8FAFC;
+  --bg-200: #F1F5F9;
+  --card: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border: #E2E8F0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-100: #0B1220;
+    --bg-200: #0F172A;
+    --card: #1E293B;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --border: #334155;
+  }
+}

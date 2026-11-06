@@ -1,0 +1,22 @@
+
+### 1.3 Endpoints used
+
+| Function | Purpose | Params | Used in |
+|----------|---------|--------|---------|
+| `core_webservice_get_site_info` | Validate token; get `userid` | — | Setup + every cycle |
+| `core_enrol_get_users_courses` | List enrolled courses | `userid` | Every cycle |
+| `core_course_get_contents` | List modules/resources per course | `courseid` | Every cycle |
+| `core_course_get_updates_since` | Incremental updates since timestamp | `courseid`, `since` | Preferred over `get_contents` |
+| `mod_assign_get_assignments` | Assignments with `duedate` | `courseids[]` | Every cycle |
+| `mod_forum_get_forums_by_courses` | Forums list | `courseids[]` | Optional |
+| `core_calendar_get_calendar_upcoming_view` | Upcoming deadlines | — | Optional |
+
+### 1.4 Sample request
+
+```http
+GET https://elms.uiu.ac.bd/webservice/rest/server.php
+  ?wstoken=abc123def456
+  &moodlewsrestformat=json
+  &wsfunction=core_course_get_updates_since
+  &courseid=42
+  &since=1730000000

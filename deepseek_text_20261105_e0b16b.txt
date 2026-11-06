@@ -1,0 +1,10 @@
+Check interval
+  [ 30 min ▾ ]   (15 / 30 / 60 / 120)
+  Minimum 15 minutes.
+
+Startup behavior
+  [x] Run a check when browser starts
+
+Data
+  [ Clear update history ]   (secondary)
+  [ Clear all settings ]     (danger)

@@ -1,0 +1,28 @@
+
+---
+
+## 📄 `docs/API_INTEGRATION.md`
+
+```markdown
+# Portal API Integration
+
+Two integrations: **ELMS** (official Moodle API — reliable) and
+**UCAM** (session-based HTML scraping — fragile).
+
+---
+
+## 1. ELMS (Moodle) — Official Web Services API
+
+**Base URL:** `https://elms.uiu.ac.bd/webservice/rest/server.php`
+
+### 1.1 Getting a token (one-time, manual, by user)
+
+1. Log into ELMS in a browser tab: `https://elms.uiu.ac.bd/login/index.php`
+2. Visit: `https://elms.uiu.ac.bd/user/managetoken.php`
+3. Click **Create token** → Service: **Moodle mobile web service**
+4. Copy the token → paste into extension Options → ELMS → "API Token" field
+5. Click **Save** → extension validates via `core_webservice_get_site_info`
+
+If the token page is disabled by UIU admin, ask UIU IT to generate one for you.
+
+### 1.2 Common query parameters

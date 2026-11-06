@@ -1,0 +1,8 @@
+🎓 UniPortal Monitor
+v1.0.0
+
+○ General
+○ UCAM
+○ ELMS
+○ Notifications
+○ About

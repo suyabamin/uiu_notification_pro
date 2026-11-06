@@ -1,0 +1,12 @@
+[ ● Connected ]   Logged in as: (detected)
+
+Monitor sections
+  [x] Notices
+  [x] Class routine
+  [x] Results
+  [x] Attendance
+  [x] Course materials
+
+[ Open UCAM to log in ]    (secondary button)
+
+Last check: 12 min ago — 0 new items

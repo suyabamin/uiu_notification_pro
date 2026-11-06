@@ -1,0 +1,34 @@
+
+## 3. Core Components
+
+### 3.1 Background Service Worker — `src/background/`
+
+The brain of the extension. Runs in Manifest V3 service worker context.
+**Must use `chrome.alarms`** — `setInterval` does NOT survive worker sleep.
+
+| Module | Responsibility |
+|--------|----------------|
+| `index.ts` | Entry; wires listeners: `onInstalled`, `onAlarm`, `onMessage`, `onStartup` |
+| `alarm-manager.ts` | Create / reschedule `chrome.alarms` per settings |
+| `checker-orchestrator.ts` | Loop enabled adapters, diff, dispatch, persist |
+| `notification-dispatcher.ts` | Desktop notifications, badge, coalescing, quiet hours |
+| `storage-manager.ts` | Typed wrapper over `chrome.storage.local` / `.session` |
+| `message-router.ts` | Handle `runtime.onMessage` contract |
+| `update-store.ts` | Persist update history (last 200 records) |
+
+**Lifecycle:**
+
+1. `chrome.runtime.onInstalled` → seed default settings, create alarm.
+2. `chrome.alarms.onAlarm` → run `checkerOrchestrator.run()`.
+3. `chrome.runtime.onMessage` → respond to `CHECK_NOW`, `GET_STATE`, `SAVE_TOKEN`, etc.
+4. `chrome.runtime.onStartup` → optionally run one check.
+
+### 3.2 Adapters — `src/adapters/`
+
+```typescript
+export interface PortalAdapter {
+  id: 'ucam' | 'elms';
+  isConfigured(): Promise<boolean>;
+  fetchSnapshot(): Promise<PortalSnapshot>;
+  diff(prev: PortalSnapshot | null, next: PortalSnapshot): Update[];
+}

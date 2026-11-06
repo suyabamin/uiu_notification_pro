@@ -1,0 +1,24 @@
+┌────────────────────────────────────────┐
+│  🎓 UniPortal Monitor          ⚙️  ⋮  │  <- header (brand green)
+├────────────────────────────────────────┤
+│  ┌──────────────────────────────────┐  │
+│  │ ● ELMS   Connected · 2 min ago   │  │  <- status card
+│  │ ● UCAM   Connected · 2 min ago   │  │
+│  └──────────────────────────────────┘  │
+│                                        │
+│  Recent Updates                        │
+│  ┌──────────────────────────────────┐  │
+│  │ 📄 New material: Lecture 5.pdf   │  │
+│  │    ELMS · CSE-3201 · 12 min ago  │  │
+│  ├──────────────────────────────────┤  │
+│  │ 📢 Notice: Exam schedule updated │  │
+│  │    UCAM · 1 hour ago             │  │
+│  ├──────────────────────────────────┤  │
+│  │ 📝 Assignment due in 2 days      │  │
+│  │    ELMS · CSE-3201 · 3 hours ago │  │
+│  └──────────────────────────────────┘  │
+│                                        │
+│  [ 🔄 Check now ]  [ 🔕 Mute 30 min ]  │
+│                                        │
+│  Last check: 12 min ago · Next: 18 min │
+└────────────────────────────────────────┘

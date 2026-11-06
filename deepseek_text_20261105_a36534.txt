@@ -1,0 +1,84 @@
+
+---
+
+## 📄 `docs/SECURITY.md`
+
+```markdown
+# Security & Threat Model
+
+## 🔒 Core Principle
+
+**We never store user passwords.** No exceptions, no workarounds, no "just
+for this one field". If a portal requires a password, the user logs in
+manually in the browser — the extension piggybacks on the resulting session.
+
+## Threat Model
+
+| # | Threat | Likelihood | Impact | Mitigation |
+|---|--------|-----------|--------|-----------|
+| 1 | Extension storage compromise | Low | High | No passwords stored; token is revocable |
+| 2 | Malicious extension reading our storage | N/A | — | Chrome isolates per-extension storage |
+| 3 | XSS in popup / options | Low | High | Strict CSP; React escaping; no `dangerouslySetInnerHTML` |
+| 4 | MITM on UCAM / ELMS | Very Low | High | HTTPS-only; browser cert validation |
+| 5 | Token leak in logs | Medium | Medium | Logger strips `wstoken` param; never log request URLs with tokens |
+| 6 | Token theft via devtools | Medium | Medium | Documented; user can revoke; v2 adds encryption |
+| 7 | Clickjacking | Low | Medium | CSP `frame-ancestors 'none'` |
+| 8 | Session cookie theft | Low | High | Read only via `chrome.cookies` (host-restricted) |
+| 9 | Silent malicious update | Low | High | Code-signed; pinned update URL; store review |
+| 10 | Rate-limit abuse / account ban | Low | High | Max 1 check / 30 min; min 15 min enforced |
+| 11 | Supply chain (npm dep) | Medium | High | Minimal deps; `pnpm audit` in CI; lockfile committed |
+| 12 | CSRF against Moodle API | Low | Low | API uses token, not cookies — immune |
+
+## Token Storage (ELMS) — Reality Check
+
+**The truth:** Browser extension storage is **NOT** encrypted at rest.
+Anyone with access to your OS user account can open DevTools on the extension
+and read the token. This is true of every extension — it's a platform limitation.
+
+### Our v1 approach
+
+1. Token stored in `chrome.storage.local` under `portal-monitor:elms-token`.
+2. Options UI displays a clear warning:
+   > ⚠️ Your token is stored locally on this device. It grants read access to
+   > your Moodle data. Revoke it from ELMS at any time if you suspect compromise.
+3. Provide a **"Revoke & Delete"** button that wipes it.
+4. Show only last-4 characters of the token in UI for identification.
+5. **Never** log the full token — logger strips `wstoken=` from any URL.
+
+### v2 (planned, see ROADMAP)
+
+- Optional passphrase-derived key (PBKDF2 → AES-GCM) to encrypt the token
+  at rest using WebCrypto. User enters passphrase once per browser session.
+
+## Permissions Justification (for store review)
+
+| Permission | Why it's needed | Could we avoid it? |
+|-----------|-----------------|-------------------|
+| `storage` | Save settings, snapshots, update history | No |
+| `alarms` | Schedule checks every N minutes | No — required for MV3 |
+| `notifications` | Show desktop notifications | No |
+| `cookies` | Read UCAM session cookie (`*.uiu.ac.bd`) | No — needed for auth |
+| `host_permissions: https://ucam.uiu.ac.bd/*` | Fetch UCAM pages with session | No |
+| `host_permissions: https://elms.uiu.ac.bd/*` | Call Moodle API | No |
+| `scripting` | Detect login-state on UCAM | Yes (optional) |
+
+### We explicitly do NOT request:
+
+- ❌ `tabs` — not needed
+- ❌ `webRequest` — not needed
+- ❌ `<all_urls>` — never
+- ❌ `clipboardRead` / `clipboardWrite` — not needed
+- ❌ `history` — not needed
+- ❌ `bookmarks` — not needed
+- ❌ `downloads` — not needed
+
+## CSP (Content Security Policy)
+
+Manifest:
+
+```json
+{
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
+  }
+}

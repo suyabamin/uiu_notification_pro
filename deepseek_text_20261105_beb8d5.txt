@@ -1,0 +1,14 @@
+
+---
+
+## 📄 `docs/BUILD_DEPLOYMENT.md`
+
+```markdown
+# Build & Deployment
+
+## Development
+
+```bash
+pnpm install
+pnpm dev:chrome      # hot-reload in Chrome via CRXJS
+pnpm dev:firefox     # hot-reload in Firefox

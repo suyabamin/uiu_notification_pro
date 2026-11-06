@@ -1,0 +1,20 @@
+
+---
+
+## 📄 `docs/ARCHITECTURE.md`
+
+```markdown
+# Architecture
+
+## 1. Design Principles
+
+1. **Zero-password storage** — never persist user credentials. No exceptions.
+2. **Adapter pattern** — each portal (UCAM, ELMS) is a pluggable adapter
+   implementing a common interface.
+3. **Offline-first** — all state lives in `chrome.storage.local`; no cloud sync.
+4. **Cross-browser first** — use WebExtensions API via `webextension-polyfill`.
+5. **Fail-safe** — one adapter failing must not stop the other.
+6. **Idempotent checks** — re-running a check must not produce duplicate notifications.
+7. **Deterministic diffing** — new items detected by stable IDs, not raw HTML hashes.
+
+## 2. High-Level Diagram

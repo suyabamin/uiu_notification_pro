@@ -1,0 +1,9 @@
+Status: [ ● Connected ]    Token: ****ab12
+
+API token
+  [ Paste your Moodle token here...               ]  [ Save ]
+  ▸ How to get a token?  (expandable help)
+
+[ Revoke token ]   (danger — confirm dialog)
+
+Last check: 12 min ago — 2 new items

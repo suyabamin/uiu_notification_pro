@@ -1,0 +1,12 @@
+[x] Enable notifications
+[x] Play sound
+
+Quiet hours
+  [x] Enable   From [ 23:00 ]  to [ 07:00 ]
+
+Notification types
+  [x] New study material
+  [x] New notice
+  [x] Assignment reminders (24h before due)
+  [x] Result published
+  [ ] Attendance changed

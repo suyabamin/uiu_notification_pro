@@ -1,0 +1,21 @@
+chrome.alarms.onAlarm
+        │
+        ▼
+checkerOrchestrator.run()
+        │
+        ├──▶ for each adapter in [ucam, elms] where enabled:
+        │        │
+        │        ├──▶ isConfigured() ?  ──no──▶ skip (log)
+        │        │
+        │        ├──▶ fetchSnapshot()  ──fail──▶ log error, continue
+        │        │
+        │        ├──▶ prev = storage.getSnapshot(id)
+        │        ├──▶ updates = diff(prev, next)
+        │        └──▶ storage.setSnapshot(id, next)
+        │
+        ▼
+allUpdates = [ucamUpdates..., elmsUpdates...]
+        │
+        ├──▶ updateStore.append(allUpdates)
+        ├──▶ notificationDispatcher.dispatch(allUpdates)
+        └──▶ badge.update(unreadCount)

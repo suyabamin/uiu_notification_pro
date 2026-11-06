@@ -1,0 +1,27 @@
+
+---
+
+## 📄 `docs/NOTIFICATIONS.md`
+
+```markdown
+# Notification System
+
+## Channels
+
+1. **Desktop notification** — `chrome.notifications` — primary channel
+2. **Toolbar badge** — unread count — secondary
+3. **In-app popup list** — always available
+
+## 1. Desktop Notification
+
+```typescript
+await browser.notifications.create(update.id, {
+  type: 'basic',
+  iconUrl: '/icons/icon-128.png',
+  title: buildTitle(update),
+  message: buildMessage(update),
+  contextMessage: adapterLabel(update.adapterId), // "ELMS" | "UCAM"
+  priority: 1,
+  requireInteraction: false,
+  buttons: [{ title: 'Open' }],
+});

@@ -1,0 +1,199 @@
+
+---
+
+## 📄 `docs/ROADMAP.md`
+
+```markdown
+# Roadmap — Coding Agent Milestones
+
+Each milestone is a self-contained deliverable. **Do not proceed to the next
+milestone until the previous one is complete and reviewed.**
+
+---
+
+## Milestone 1 — Skeleton (Day 1)
+
+**Goal:** Extension loads in Chrome and Firefox with empty UI.
+
+- [ ] `pnpm init`, install deps per `TECH_STACK.md`
+- [ ] `vite.config.ts` with `@crxjs/vite-plugin`
+- [ ] `src/manifest.ts` returning MV3 for all 4 browsers
+- [ ] Placeholder icons (16/32/48/128 PNG) in `public/icons/`
+- [ ] Empty `src/popup/` (React renders "Popup")
+- [ ] Empty `src/options/` (React renders "Options")
+- [ ] `src/background/index.ts` with `console.log("SW started")`
+- [ ] Load unpacked in Chrome → no errors
+- [ ] Load in Firefox via `about:debugging` → no errors
+
+**Acceptance:** Both browsers show the extension with popup + options accessible.
+
+---
+
+## Milestone 2 — Storage & Messaging (Day 2)
+
+**Goal:** Typed storage + message contract working end-to-end.
+
+- [ ] `shared/types.ts` — `Settings`, `PortalSnapshot`, `SnapshotItem`, `Update`
+- [ ] `shared/constants.ts` — `DEFAULT_SETTINGS`, storage key prefixes
+- [ ] `shared/messages.ts` — discriminated union of message types
+- [ ] `background/storage-manager.ts` — typed get/set with defaults
+- [ ] `background/message-router.ts` — handle `GET_STATE`, `SAVE_SETTINGS`,
+      `CHECK_NOW`, `CLEAR_HISTORY`, `MARK_READ`, `MARK_ALL_READ`
+- [ ] Popup sends `GET_STATE` on mount, displays raw JSON (temporary)
+- [ ] Unit test for `storage-manager` (Vitest + `vitest-chrome`)
+
+**Acceptance:** Popup shows current settings; saving settings persists across reload.
+
+---
+
+## Milestone 3 — Alarms + Orchestrator (Day 3)
+
+**Goal:** Scheduled checks run; dummy update appears; notification fires.
+
+- [ ] `background/alarm-manager.ts` — create alarm on install, reschedule on
+      `SAVE_SETTINGS` with new interval
+- [ ] `background/checker-orchestrator.ts` — loop adapters, catch errors
+- [ ] Dummy adapter returning 1 fake update per call
+- [ ] `background/notification-dispatcher.ts` — basic desktop notification
+- [ ] "Check now" button → `CHECK_NOW` → orchestrator runs → toast in popup
+- [ ] Badge count updates from unread updates
+- [ ] **CRITICAL:** Use `chrome.alarms`, NOT `setInterval`
+
+**Acceptance:** With 1-min interval (dev only), notification fires reliably
+across a 10-minute browser session where the SW sleeps and wakes.
+
+---
+
+## Milestone 4 — ELMS Adapter (Day 4–5)
+
+**Goal:** Real ELMS monitoring via Moodle API with token flow.
+
+- [ ] `adapters/elms/api-client.ts` — GET with `wstoken`, 15s timeout, 2 retries
+- [ ] `adapters/elms/endpoints.ts` — typed endpoint builders
+- [ ] `core_webservice_get_site_info` → validate token on save
+- [ ] `core_enrol_get_users_courses` → course list
+- [ ] `core_course_get_contents` per course → `SnapshotItem[]` (materials)
+- [ ] `adapters/elms/diff.ts` — new-by-id + `timemodified` changes
+- [ ] Options → ELMS section: paste token, Save, validate, show status
+- [ ] Revoke token flow with confirm dialog
+- [ ] Handle `invalidtoken` → set `tokenExpired`, disable checks, show banner
+- [ ] Unit tests with `elms-*.json` fixtures
+
+**Acceptance:** With a real UIU ELMS token, saving shows green status, a check
+cycle fetches real courses and materials, new files trigger notifications.
+
+---
+
+## Milestone 5 — UCAM Adapter (Day 6–7)
+
+**Goal:** Real UCAM monitoring via session cookies.
+
+- [ ] `adapters/ucam/cookies.ts` — read session cookies
+- [ ] `adapters/ucam/fetcher.ts` — fetch with `credentials: 'include'`,
+      detect login form
+- [ ] `adapters/ucam/selectors.ts` — central `SELECTORS` map (verify paths
+      against live portal with DevTools first)
+- [ ] `adapters/ucam/parser.ts` — extract items per section
+- [ ] `adapters/ucam/diff.ts` — new-item detection
+- [ ] Popup: "Log in to UCAM" CTA when not authenticated
+- [ ] Handle HTML parse failure gracefully (return empty, log)
+- [ ] Unit tests with `ucam-*.html` fixtures
+
+**Acceptance:** While logged into UCAM in a browser tab, a check fetches real
+notices/results, and new items trigger notifications.
+
+---
+
+## Milestone 6 — Notification Polish (Day 8)
+
+**Goal:** Production-quality notification system.
+
+- [ ] Coalescing: 3+ updates in one cycle → summary notification
+- [ ] Quiet hours: skip desktop during window, badge still updates
+- [ ] Dedup via `notified-ids` in session storage
+- [ ] Badge count from unread updates
+- [ ] Notification click → open URL + mark read
+- [ ] Sound (optional, from `public/sounds/notify.mp3`)
+- [ ] Unit tests for template + coalescing + quiet hours
+
+**Acceptance:** All notification edge cases handled per `NOTIFICATIONS.md`.
+
+---
+
+## Milestone 7 — Full UI (Day 9–10)
+
+**Goal:** Production-ready popup + options UI.
+
+- [ ] Popup per `UI_UX_SPEC.md`:
+      header, status cards, update list, empty state, error states, toasts
+- [ ] Options per `UI_UX_SPEC.md`:
+      sidebar layout, all 5 sections, validation, confirm dialogs
+- [ ] Dark mode via `prefers-color-scheme`
+- [ ] Accessibility: keyboard nav, aria-live, focus rings, contrast
+- [ ] lucide-react icons everywhere
+- [ ] Loading skeletons
+
+**Acceptance:** Popup + options look polished in light + dark mode, meet
+accessibility checklist.
+
+---
+
+## Milestone 8 — Cross-Browser Polish (Day 11)
+
+**Goal:** Works on all 4 browsers.
+
+- [ ] `scripts/build-all.mjs` produces all 4 `dist/` + `build/*.zip`
+- [ ] Firefox-specific manifest fields applied only in firefox build
+- [ ] Replace all direct `chrome.*` calls with `browser.*` from
+      `webextension-polyfill` (via `shared/browser.ts`)
+- [ ] Manual test: load in Firefox `about:debugging`, all flows work
+- [ ] Manual test: load in Edge, all flows work
+- [ ] Manual test: load in Opera, all flows work
+- [ ] Fix any permission/API differences
+
+**Acceptance:** All 4 browsers pass the manual QA checklist in `TESTING.md`.
+
+---
+
+## Milestone 9 — QA, Docs, Assets (Day 12)
+
+**Goal:** Release-ready artifacts.
+
+- [ ] Full manual QA checklist pass (Chrome + Firefox)
+- [ ] Screenshots (1280×800 light + dark) for store listings
+- [ ] Small tile 440×280
+- [ ] Store descriptions written
+- [ ] `CHANGELOG.md` v1.0.0
+- [ ] `LICENSE` file (MIT)
+- [ ] `.gitignore` excludes `dist/`, `build/`, `node_modules/`
+- [ ] `README.md` (root) links all docs
+
+**Acceptance:** Every file needed for store submission is ready.
+
+---
+
+## Milestone 10 — Submit (Day 13)
+
+**Goal:** Live in stores.
+
+- [ ] `pnpm build:all && pnpm package`
+- [ ] Chrome Web Store submission
+- [ ] Edge Add-ons submission
+- [ ] Firefox AMO submission (with source code zip)
+- [ ] Opera Add-ons submission
+- [ ] Tag `v1.0.0` in git
+
+**Acceptance:** At least Chrome + Firefox approved and live.
+
+---
+
+## Stretch Goals (v1.1+)
+
+- 🔐 Encrypted token at rest (WebCrypto + user passphrase)
+- ⏰ Assignment deadline reminders (24h / 1h before due)
+- 🔍 Search & filter in update list
+- 📤 Export history to JSON
+- 🤖 Optional Discord / Telegram webhook notifications
+- 🧭 Safari support via `xcrun safari-web-extension-converter`
+- 🌐 i18n (English + Bangla)
+- 📊 Weekly summary digest email (opt-in, via user's own SMTP — out of v1 scope)

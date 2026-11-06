@@ -1,0 +1,64 @@
+
+---
+
+## 📄 `docs/TECH_STACK.md`
+
+```markdown
+# Tech Stack
+
+## Language & Build
+
+| Concern | Choice | Why |
+|--------|--------|-----|
+| Language | **TypeScript 5.x** | Type safety across background/UI/messages |
+| Bundler | **Vite 5** + `@crxjs/vite-plugin` | Fast HMR, MV3-aware, cross-browser |
+| Package manager | **pnpm** | Fast, disk-efficient, strict |
+| Linting | ESLint + Prettier | Consistent code style |
+| Testing | Vitest + Testing Library + Playwright (optional) | Fast unit + browser e2e |
+
+## Runtime Libraries
+
+| Purpose | Library | Notes |
+|---------|---------|-------|
+| Cross-browser API | `webextension-polyfill` | Unify `chrome.*` / `browser.*` |
+| UI framework | `react@18` + `react-dom` | Small, well-known |
+| Styling | `tailwindcss@3` + `postcss` + `autoprefixer` | Utility-first, fast |
+| Icons | `lucide-react` | Tree-shakeable, consistent |
+| State (popup/options) | `zustand` | ~1KB, simple |
+| Date formatting | `date-fns` | Tree-shakeable |
+| UUID | `crypto.randomUUID()` | Native |
+| HTML parsing | native `DOMParser` | Available in MV3 SW (Chrome 115+) |
+| Hash | Web Crypto `SHA-256` | Native |
+
+## Dev Tooling
+
+| Purpose | Library |
+|---------|---------|
+| Vite | `vite@5` |
+| Extension plugin | `@crxjs/vite-plugin` |
+| Types | `@types/chrome`, `@types/firefox-webext-browser` |
+| TS config base | `@tsconfig/strictest` |
+| Browser mock | `vitest-chrome` |
+
+## Explicitly AVOIDED
+
+| Rejected | Reason |
+|----------|--------|
+| ❌ jQuery | Unnecessary; DOMParser is enough |
+| ❌ Cheerio | Node-only; not available in SW |
+| ❌ Moment.js | Heavy; use date-fns |
+| ❌ Any analytics / telemetry | Privacy principle |
+| ❌ Remote code (CDN scripts) | MV3 forbids; CSP blocks |
+| ❌ Password managers / keychains | Out of scope; invites security risk |
+| ❌ `setInterval` for scheduling | Dies when MV3 SW sleeps |
+| ❌ React Router | Overkill for 2 small pages |
+
+## Node & Tool Versions
+
+```json
+{
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
