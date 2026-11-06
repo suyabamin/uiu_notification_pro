@@ -1,4 +1,4 @@
-# 🎓 UniPortal Monitor
+# 🎓uiu_notification_pro
 ### Cross-Browser University Portal Notification & Monitoring Extension
 
 <p align="center">
